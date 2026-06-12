@@ -161,24 +161,15 @@ def _kyiv_dt(dt_utc):
     return dt_utc.astimezone(KYIV).strftime("%d.%m %H:%M")
 
 
-def format_match_brief(pred: dict) -> str:
-    """Compact one-match block for a batched game-day message."""
-    m = pred["match"]
-    ph, pa = pred["pick"]
-    conf_ru = {"low": "низкая", "medium": "средняя", "high": "высокая"}[pred["confidence"]]
-    alts = ", ".join(f"{h}:{a}" for (h, a), _ in pred["alts"])
-    return (f"⚽ <b>{m['home']} — {m['away']}</b>  ({_kyiv_dt(m['kickoff_utc'])})\n"
-            f"🎯 <b>{ph}:{pa}</b> (EV {pred['pick_ev']:.2f}) · уверенность {conf_ru} · альт: {alts}")
-
-
-def format_day_message(preds: list[dict]) -> str:
-    """One Telegram message with all predictions for a game day."""
+def day_header(preds: list[dict]) -> str:
+    """Short header sent before the per-match detailed messages."""
     preds = sorted(preds, key=lambda p: p["match"]["kickoff_utc"])
     date_label = _kyiv_dt(preds[0]["match"]["kickoff_utc"]).split()[0]
-    blocks = "\n\n".join(format_match_brief(p) for p in preds)
-    return (f"📋 <b>Прогнозы на игровой день {date_label}</b> (матчей: {len(preds)})\n\n"
-            f"{blocks}\n\n"
-            f"<i>Детальные факторы по матчу — по запросу.</i>")
+    line = "  ·  ".join(
+        f"{p['match']['home']}–{p['match']['away']} {p['pick'][0]}:{p['pick'][1]}" for p in preds)
+    return (f"📋 <b>Прогнозы на игровой день {date_label}</b> (матчей: {len(preds)})\n"
+            f"{line}\n"
+            f"<i>Подробный разбор по каждому матчу — ниже.</i>")
 
 
 def format_message(pred: dict) -> str:
