@@ -56,8 +56,8 @@ def first_kickoff(cluster: list[dict]) -> datetime:
 
 
 def game_day_key(cluster: list[dict]) -> str:
-    """Stable, collision-free dedup key: the Kyiv date of the day's first match."""
-    return "GD:" + first_kickoff(cluster).astimezone(KYIV).strftime("%Y-%m-%d")
+    """Stable, collision-free dedup key: Kyiv date+time of the day's first match."""
+    return "GD:" + first_kickoff(cluster).astimezone(KYIV).strftime("%Y-%m-%d-%H%M")
 
 
 def send_time(cluster: list[dict]) -> datetime:
