@@ -51,7 +51,9 @@ def world_cup_fixtures(date_from: str, date_to: str) -> list[dict]:
     raw = _get("fixtures", sportId=10, **{"from": date_from, "to": date_to})
     out = []
     for f in raw:
-        if "world cup" not in (f.get("tournamentName") or "").lower():
+        name = f.get("tournamentName") or ""
+        parts = (str(f.get("participant1Name", "")) + " " + str(f.get("participant2Name", ""))).upper()
+        if name != "World Cup" or "SRL" in parts:   # exclude Simulated Reality League
             continue
         out.append({
             "fixture_id": f["fixtureId"],
