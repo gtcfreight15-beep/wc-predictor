@@ -187,6 +187,39 @@ def lambdas_from_market(p_home: float, p_draw: float, p_away: float,
 # --------------------------------------------------------------------------- #
 # 5. Elo cross-check / baseline                                                #
 # --------------------------------------------------------------------------- #
+# Common alternate spellings -> the key convention used in state/elo.json.
+_ELO_ALIASES = {
+    "south korea": "korea republic",
+    "republic of korea": "korea republic",
+    "czech republic": "czechia",
+    "united states": "usa",
+    "united states of america": "usa",
+    "iran": "ir iran",
+    "ivory coast": "ivory coast",
+    "cote d'ivoire": "ivory coast",
+    "bosnia & herzegovina": "bosnia and herzegovina",
+    "turkiye": "turkey",
+    "türkiye": "turkey",
+    "cabo verde": "cape verde",
+    "curacao": "curacao",
+    "curaçao": "curacao",
+}
+
+
+def elo_get(elo: dict | None, team: str) -> float | None:
+    """Look up a team's Elo tolerantly (exact -> case-insensitive -> alias)."""
+    if not elo:
+        return None
+    if team in elo and not team.startswith("_"):
+        return elo[team]
+    n = team.strip().lower()
+    norm = {k.strip().lower(): v for k, v in elo.items() if not k.startswith("_")}
+    if n in norm:
+        return norm[n]
+    alias = _ELO_ALIASES.get(n)
+    return norm.get(alias) if alias else None
+
+
 def elo_win_prob(elo_home: float, elo_away: float, home_adv: float = 0.0) -> float:
     """World-Football-Elo expected result for the home side (0..1, draw-inclusive)."""
     dr = (elo_home + home_adv) - elo_away
