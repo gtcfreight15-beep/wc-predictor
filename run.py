@@ -41,8 +41,9 @@ def _send_day(cluster, elo, sent, key):
     if not preds:
         print(f"[skip] {key}: no matches with odds yet")
         return False
-    telegram.send_message(predict.format_day_message(preds))
-    for pred in preds:
+    telegram.send_message(predict.day_header(preds))
+    for pred in sorted(preds, key=lambda p: p["match"]["kickoff_utc"]):
+        telegram.send_message(predict.format_message(pred))
         calibration.log_prediction(pred, elo)
     sent.add(key)
     print(f"[sent] {key}: {len(preds)} match(es)")
