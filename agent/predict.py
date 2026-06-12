@@ -137,8 +137,9 @@ def build_prediction(match: dict, market: dict, weather: str | None,
     ev_gap = pick_ev - ranked[1][1]
 
     elo_we = None
-    if elo and match["home"] in elo and match["away"] in elo:
-        elo_we = model.elo_win_prob(elo[match["home"]], elo[match["away"]])
+    eh, ea = model.elo_get(elo, match["home"]), model.elo_get(elo, match["away"])
+    if eh is not None and ea is not None:
+        elo_we = model.elo_win_prob(eh, ea)
 
     conf, downgrades = mechanical_confidence(market, adj, elo_we, ev_gap)
 
@@ -151,6 +152,33 @@ def build_prediction(match: dict, market: dict, weather: str | None,
         "modal": model.modal_score(P),
         "confidence": conf, "downgrades": downgrades, "elo_we": elo_we,
     }
+
+
+def _kyiv_dt(dt_utc):
+    from agent.scheduler import KYIV, UTC
+    if dt_utc.tzinfo is None:
+        dt_utc = dt_utc.replace(tzinfo=UTC)
+    return dt_utc.astimezone(KYIV).strftime("%d.%m %H:%M")
+
+
+def format_match_brief(pred: dict) -> str:
+    """Compact one-match block for a batched game-day message."""
+    m = pred["match"]
+    ph, pa = pred["pick"]
+    conf_ru = {"low": "низкая", "medium": "средняя", "high": "высокая"}[pred["confidence"]]
+    alts = ", ".join(f"{h}:{a}" for (h, a), _ in pred["alts"])
+    return (f"⚽ <b>{m['home']} — {m['away']}</b>  ({_kyiv_dt(m['kickoff_utc'])})\n"
+            f"🎯 <b>{ph}:{pa}</b> (EV {pred['pick_ev']:.2f}) · уверенность {conf_ru} · альт: {alts}")
+
+
+def format_day_message(preds: list[dict]) -> str:
+    """One Telegram message with all predictions for a game day."""
+    preds = sorted(preds, key=lambda p: p["match"]["kickoff_utc"])
+    date_label = _kyiv_dt(preds[0]["match"]["kickoff_utc"]).split()[0]
+    blocks = "\n\n".join(format_match_brief(p) for p in preds)
+    return (f"📋 <b>Прогнозы на игровой день {date_label}</b> (матчей: {len(preds)})\n\n"
+            f"{blocks}\n\n"
+            f"<i>Детальные факторы по матчу — по запросу.</i>")
 
 
 def format_message(pred: dict) -> str:
