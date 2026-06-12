@@ -51,7 +51,7 @@ def world_cup_fixtures(date_from: str, date_to: str) -> list[dict]:
     raw = _get("fixtures", sportId=10, **{"from": date_from, "to": date_to})
     out = []
     for f in raw:
-        if f.get("tournamentName") != "World Cup":
+        if "world cup" not in (f.get("tournamentName") or "").lower():
             continue
         out.append({
             "fixture_id": f["fixtureId"],
