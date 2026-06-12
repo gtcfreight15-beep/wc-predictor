@@ -42,10 +42,17 @@ def main() -> None:
         raise
 
     game_days = scheduler.group_game_days(fixtures)
+    print(f"[info] fixtures: {len(fixtures)} | with odds: {sum(1 for f in fixtures if f['has_odds'])} "
+          f"| window {date_from}..{date_to} | game days: {len(game_days)}")
 
     for cluster in game_days:
         key = scheduler.game_day_key(cluster)
-        if not scheduler.due(cluster, now, already_sent=key in sent):
+        first = scheduler.first_kickoff(cluster)
+        st = scheduler.send_time(cluster)
+        is_due = scheduler.due(cluster, now, already_sent=key in sent)
+        print(f"[info] {key}: matches={len(cluster)} first={scheduler.kyiv_str(first)} "
+              f"send={scheduler.kyiv_str(st)} already_sent={key in sent} due={is_due}")
+        if not is_due:
             continue
 
         preds = []
