@@ -2,17 +2,16 @@
 """
 Cron entrypoint (runs every ~30 min on GitHub Actions).
 
-For every upcoming World Cup fixture, decide via the Kyiv send-time rules whether it's due
-now; if so, build the prediction and send it once. State (which fixtures were sent) is a JSON
-file committed back to the repo by the workflow.
+Groups upcoming World Cup fixtures into game days and, for each game day that is due now
+(per the random Kyiv send window), builds predictions for ALL its matches and sends them as
+one batched message. Dedup is per game day. State is committed back to the repo by the workflow.
 """
 import datetime as dt
 import json
 import os
 import traceback
 
-from agent import calibration, config, odds, predict, telegram
-from agent.scheduler import due
+from agent import calibration, config, odds, predict, scheduler, telegram
 
 
 def _load_sent() -> set[str]:
@@ -42,22 +41,36 @@ def main() -> None:
         print(f"[fatal] could not fetch fixtures: {e}")
         raise
 
-    for fx in fixtures:
-        fid = fx["fixture_id"]
-        if not fx["has_odds"]:
+    game_days = scheduler.group_game_days(fixtures)
+
+    for cluster in game_days:
+        key = scheduler.game_day_key(cluster)
+        if not scheduler.due(cluster, now, already_sent=key in sent):
             continue
-        if not due(fx["kickoff_utc"], now, already_sent=fid in sent):
+
+        preds = []
+        for fx in sorted(cluster, key=lambda f: f["kickoff_utc"]):
+            if not fx["has_odds"]:
+                continue
+            try:
+                market = odds.market_view(fx["fixture_id"])
+                pred = predict.build_prediction(fx, market, weather=None, elo=elo)
+                preds.append(pred)
+            except Exception:
+                print(f"[error] {fx['home']} - {fx['away']}:\n{traceback.format_exc()}")
+
+        if not preds:
+            print(f"[skip] {key}: no matches with odds yet")
             continue
+
         try:
-            market = odds.market_view(fid)
-            pred = predict.build_prediction(fx, market, weather=None, elo=elo)
-            msg = predict.format_message(pred)
-            telegram.send_message(msg)
-            calibration.log_prediction(pred, elo)
-            sent.add(fid)
-            print(f"[sent] {fx['home']} - {fx['away']}  pick {pred['pick']}  conf {pred['confidence']}")
+            telegram.send_message(predict.format_day_message(preds))
+            for pred in preds:
+                calibration.log_prediction(pred, elo)
+            sent.add(key)
+            print(f"[sent] {key}: {len(preds)} match(es)")
         except Exception:
-            print(f"[error] {fx['home']} - {fx['away']}:\n{traceback.format_exc()}")
+            print(f"[error] sending {key}:\n{traceback.format_exc()}")
 
     _save_sent(sent)
 
