@@ -1,1 +1,3 @@
 {"fixture_id": "id1000001666456906", "home": "Korea Republic", "away": "Czechia", "actual": [2, 1], "pick": [1, 1], "pick_ev": 1.2435, "points": {"ev_pick": 0, "modal": 0, "naive_fav": 0}}
+{"fixture_id": "id1000001666456916", "home": "Canada", "away": "Bosnia and Herzegovina", "actual": [1, 1], "pick": [1, 0], "pick_ev": 1.5136, "points": {"ev_pick": 0, "modal": 0, "naive_fav": 0}}
+{"fixture_id": "id1000001666456940", "home": "USA", "away": "Paraguay", "actual": [4, 1], "pick": [1, 0], "pick_ev": 1.3903, "points": {"ev_pick": 1, "modal": 0, "naive_fav": 1}}
