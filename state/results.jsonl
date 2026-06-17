@@ -5,3 +5,7 @@
 {"fixture_id": "id1000001666456928", "home": "Brazil", "away": "Morocco", "actual": [1, 1], "pick": [1, 0], "pick_ev": 1.601, "points": {"ev_pick": 0, "modal": 0, "naive_fav": 0}}
 {"fixture_id": "id1000001666456930", "home": "Haiti", "away": "Scotland", "actual": [0, 1], "pick": [0, 2], "pick_ev": 1.5279, "points": {"ev_pick": 2, "modal": 0, "naive_fav": 5}}
 {"fixture_id": "id1000001666456942", "home": "Australia", "away": "Turkiye", "actual": [2, 0], "pick": [0, 1], "pick_ev": 1.4568, "points": {"ev_pick": 0, "modal": 0, "naive_fav": 0}}
+{"fixture_id": "id1000001666457006", "home": "France", "away": "Senegal", "actual": [3, 1], "pick": [2, 0], "pick_ev": 1.6702, "points": {"ev_pick": 3, "modal": 3, "naive_fav": 1}}
+{"fixture_id": "id1000001666457008", "home": "Iraq", "away": "Norway", "actual": [1, 4], "pick": [0, 2], "pick_ev": 2.0016, "points": {"ev_pick": 1, "modal": 1, "naive_fav": 1}}
+{"fixture_id": "id1000001666457018", "home": "Argentina", "away": "Algeria", "actual": [3, 0], "pick": [2, 0], "pick_ev": 1.8357, "points": {"ev_pick": 2, "modal": 2, "naive_fav": 2}}
+{"fixture_id": "id1000001666457020", "home": "Austria", "away": "Jordan", "actual": [3, 1], "pick": [2, 0], "pick_ev": 1.8589, "points": {"ev_pick": 3, "modal": 3, "naive_fav": 1}}
