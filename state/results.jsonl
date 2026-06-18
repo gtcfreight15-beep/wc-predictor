@@ -9,3 +9,7 @@
 {"fixture_id": "id1000001666457008", "home": "Iraq", "away": "Norway", "actual": [1, 4], "pick": [0, 2], "pick_ev": 2.0016, "points": {"ev_pick": 1, "modal": 1, "naive_fav": 1}}
 {"fixture_id": "id1000001666457018", "home": "Argentina", "away": "Algeria", "actual": [3, 0], "pick": [2, 0], "pick_ev": 1.8357, "points": {"ev_pick": 2, "modal": 2, "naive_fav": 2}}
 {"fixture_id": "id1000001666457020", "home": "Austria", "away": "Jordan", "actual": [3, 1], "pick": [2, 0], "pick_ev": 1.8589, "points": {"ev_pick": 3, "modal": 3, "naive_fav": 1}}
+{"fixture_id": "id1000001666457030", "home": "Portugal", "away": "Congo DR", "actual": [1, 1], "pick": [2, 0], "pick_ev": 1.9658, "points": {"ev_pick": 0, "modal": 0, "naive_fav": 0}}
+{"fixture_id": "id1000001666457042", "home": "England", "away": "Croatia", "actual": [4, 2], "pick": [1, 0], "pick_ev": 1.516, "points": {"ev_pick": 1, "modal": 0, "naive_fav": 1}}
+{"fixture_id": "id1000001666457044", "home": "Ghana", "away": "Panama", "actual": [1, 0], "pick": [1, 1], "pick_ev": 1.26, "points": {"ev_pick": 0, "modal": 0, "naive_fav": 5}}
+{"fixture_id": "id1000001666457032", "home": "Uzbekistan", "away": "Colombia", "actual": [1, 3], "pick": [0, 2], "pick_ev": 1.84, "points": {"ev_pick": 3, "modal": 3, "naive_fav": 1}}
