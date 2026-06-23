@@ -29,3 +29,5 @@
 {"fixture_id": "id1000001666456988", "home": "New Zealand", "away": "Egypt", "actual": [1, 3], "pick": [0, 1], "pick_ev": 1.5583, "points": {"ev_pick": 1, "modal": 0, "naive_fav": 1}}
 {"fixture_id": "id1000001666457022", "home": "Argentina", "away": "Austria", "actual": [2, 0], "pick": [2, 0], "pick_ev": 1.7239, "points": {"ev_pick": 5, "modal": 5, "naive_fav": 2}}
 {"fixture_id": "id1000001666457012", "home": "Norway", "away": "Senegal", "actual": [2, 1], "pick": [2, 1], "pick_ev": 1.2069, "points": {"ev_pick": 5, "modal": 0, "naive_fav": 3}}
+{"fixture_id": "id1000001666457010", "home": "France", "away": "Iraq", "actual": [3, 0], "pick": [3, 0], "pick_ev": 2.1204, "points": {"ev_pick": 5, "modal": 5, "naive_fav": 2}}
+{"fixture_id": "id1000001666457024", "home": "Jordan", "away": "Algeria", "actual": [1, 2], "pick": [0, 2], "pick_ev": 1.5812, "points": {"ev_pick": 2, "modal": 2, "naive_fav": 3}}
